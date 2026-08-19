@@ -219,3 +219,7 @@ __marimo__/
 
 #Test database
 *.db
+
+# Test artifacts
+screenshots/
+logs/
