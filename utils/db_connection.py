@@ -6,10 +6,12 @@ class DatabaseConnection:
 
     def __init__(self, database=None):
         self.database = database or Config.DATABASE_NAME
-        self.connection = None
+        self.connection = sqlite3.connect(self.database)
 
     def connect(self):
-        self.connection = sqlite3.connect(self.database)
+        if self.connection is None:
+            self.connection = sqlite3.connect(self.database)
+
         return self.connection
 
     def execute_query(self, query, parameters=()):
@@ -25,3 +27,4 @@ class DatabaseConnection:
     def close(self):
         if self.connection:
             self.connection.close()
+            self.connection = None
