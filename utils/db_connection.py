@@ -1,10 +1,11 @@
 import sqlite3
+from utils.config import Config
 
 
 class DatabaseConnection:
 
-    def __init__(self, database="test_database.db"):
-        self.database = database
+    def __init__(self, database=None):
+        self.database = database or Config.DATABASE_NAME
         self.connection = None
 
     def connect(self):

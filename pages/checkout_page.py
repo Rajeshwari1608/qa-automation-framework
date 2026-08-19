@@ -8,14 +8,25 @@ class CheckoutPage:
     FIRST_NAME = (By.ID, "first-name")
     LAST_NAME = (By.ID, "last-name")
     POSTAL_CODE = (By.ID, "postal-code")
+
     CONTINUE_BUTTON = (By.ID, "continue")
     FINISH_BUTTON = (By.ID, "finish")
-    ORDER_CONFIRMATION = (By.CLASS_NAME, "complete-header")
-    ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
+
+    PAGE_TITLE = (By.CLASS_NAME, "title")
+
+    ORDER_CONFIRMATION = (
+        By.CSS_SELECTOR,
+        "[data-test='complete-header']"
+    )
+
+    ERROR_MESSAGE = (
+        By.CSS_SELECTOR,
+        "h3[data-test='error']"
+    )
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 15)
 
     def enter_first_name(self, first_name):
         self.wait.until(
@@ -37,17 +48,33 @@ class CheckoutPage:
             EC.element_to_be_clickable(self.CONTINUE_BUTTON)
         ).click()
 
+    def verify_checkout_overview(self):
+        title = self.wait.until(
+            EC.visibility_of_element_located(self.PAGE_TITLE)
+        )
+        return title.text
+
     def finish_order(self):
         self.wait.until(
             EC.element_to_be_clickable(self.FINISH_BUTTON)
         ).click()
 
     def get_confirmation_message(self):
-        return self.wait.until(
-            EC.visibility_of_element_located(self.ORDER_CONFIRMATION)
-        ).text
+        self.wait.until(
+            EC.url_contains("checkout-complete")
+        )
+
+        element = self.wait.until(
+            EC.visibility_of_element_located(
+                self.ORDER_CONFIRMATION
+            )
+        )
+
+        return element.text
 
     def get_error_message(self):
         return self.wait.until(
-            EC.visibility_of_element_located(self.ERROR_MESSAGE)
+            EC.visibility_of_element_located(
+                self.ERROR_MESSAGE
+            )
         ).text

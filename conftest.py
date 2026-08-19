@@ -33,6 +33,6 @@ def database():
 
     yield db
 
-    # Clean data after every test
+    # Clean test data after every test
     db.execute_update("DELETE FROM users")
     db.close()

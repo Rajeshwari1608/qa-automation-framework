@@ -2,11 +2,12 @@ import time
 from jsonschema import validate
 
 from utils.api_client import APIClient
+from utils.config import Config
 
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
 
-api_client = APIClient(BASE_URL)
+api_client = APIClient(Config.API_BASE_URL)
 
 
 def test_get_users():
